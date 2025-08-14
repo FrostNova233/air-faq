@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>机场常见问题 FAQ</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to bottom, #e6f2ff, #ffffff);
+        color: #333;
+      }
+      header {
+        background: linear-gradient(90deg, #0066cc, #0099ff);
+        color: white;
+        text-align: center;
+        padding: 15px;
+        font-size: 1.6em;
+        font-weight: bold;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      }
+      header::before {
+        content: "✈ ";
+      }
+      .container {
+        max-width: 900px;
+        margin: auto;
+        padding: 20px;
+      }
+      /* 首页问题卡片 */
+      .faq-question {
+        background: white;
+        margin-bottom: 15px;
+        padding: 18px;
+        border-radius: 12px;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        color: #0066cc;
+        font-weight: bold;
+        text-decoration: none;
+        display: block;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+      .faq-question:hover {
+        background-color: #f0f8ff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+      }
+      /* 答案页样式 */
+      .content {
+        background: white;
+        border-radius: 12px;
+        border: 1px solid #ddd;
+        padding: 25px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      }
+      .content h2 {
+        margin-top: 0;
+        color: #0066cc;
+        border-bottom: 2px solid #e6f2ff;
+        padding-bottom: 8px;
+      }
+      .content p {
+        line-height: 1.6;
+        font-size: 1.05em;
+      }
+      .content img {
+        max-width: 100%;
+        border-radius: 8px;
+        margin-top: 15px;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+      }
+      /* 返回按钮 */
+      .btn-back {
+        display: inline-block;
+        margin-top: 25px;
+        padding: 10px 20px;
+        background: linear-gradient(90deg, #0066cc, #0099ff);
+        color: white;
+        text-decoration: none;
+        border-radius: 25px;
+        font-size: 1em;
+        font-weight: bold;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: background 0.2s ease;
+      }
+      .btn-back:hover {
+        background: linear-gradient(90deg, #004a99, #007acc);
+      }
+    </style>
+  </head>
+  <body>
+    <header>机场常见问题 FAQ</header>
+    <div class="container" id="app"></div>
+
+    <script>
+      // FAQ 数据
+      const faqData = {
+        1: {
+          question: "我应该提前多久到达机场？",
+          answer: `<p>国内航班建议提前 <strong>2 小时</strong>，国际航班提前 <strong>3 小时</strong>。</p>
+                 <img src="https://i.imgs.ovh/2025/08/14/tnAs1.png" alt="值机时间示意图">`,
+        },
+        2: {
+          question: "办理登机手续截止时间是多久？",
+          answer: `<p>国内航班在起飞前 <strong>45 分钟</strong> 截止办理登机手续。</p>
+                 <img src="https://i.imgs.ovh/2025/08/14/tn54M.png" alt="机手续截止时间示意图">`,
+        },
+        3: {
+          question: "托运行李的重量限制是多少？",
+          answer: `<p>国内航班经济舱通常为 <strong>20 公斤</strong>，商务舱为 <strong>30 公斤</strong>。</p>
+                 <img src="https://i.imgs.ovh/2025/08/14/tnP9q.png" alt="行李限制示意图">`,
+        },
+        4: {
+          question: "随身携带液体有限制吗？",
+          answer: `<p>国际航班液体容器不得超过 <strong>100ml</strong>，总量不超过 <strong>1L</strong>。</p>
+                <img src="https://i.imgs.ovh/2025/08/14/tnxbd.png" alt="带液体有限制示意图">`,
+        },
+        5: {
+          question: "机场交通路线",
+          answer: `<p>可乘坐地铁 X 号线或机场大巴 XX 路直达机场。</p>
+                 <img src="https://i.imgs.ovh/2025/08/14/tnXX0.png" alt="机场交通地图">`,
+        },
+      };
+
+      // URL 参数
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id");
+
+      // 渲染首页
+      function renderHome() {
+        let html = "";
+        for (let key in faqData) {
+          html += `<a class="faq-question" href="?id=${key}">${faqData[key].question}</a>`;
+        }
+        document.getElementById("app").innerHTML = html;
+      }
+
+      // 渲染答案页
+      function renderAnswer(id) {
+        if (!faqData[id]) {
+          document.getElementById(
+            "app"
+          ).innerHTML = `<p>未找到该问题</p><a href="?" class="btn-back">返回问题一览</a>`;
+          return;
+        }
+        const q = faqData[id];
+        document.getElementById("app").innerHTML = `
+        <div class="content">
+            <h2>${q.question}</h2>
+            ${q.answer}
+            <a href="?" class="btn-back">← 返回问题一览</a>
+        </div>
+    `;
+      }
+
+      // 判断显示内容
+      if (id) {
+        renderAnswer(id);
+      } else {
+        renderHome();
+      }
+    </script>
+  </body>
+</html>
